@@ -5,9 +5,23 @@ class Program
 
     static void Main()
     {
-        string pathToFolder = AuxiliaryMethods.GetPathToFolder();
-        string[] tables = AuxiliaryMethods.GetArrayTables(pathToFolder); 
+        string pathToFolder = AuxiliaryMethods.GetPathToFolder(); // путь до папки
+        string[] tables = AuxiliaryMethods.GetArrayTables(pathToFolder); // тут лежит массив путей до каждой таблицы
         string nameTable = AuxiliaryMethods.GetNameTable(tables); //возваращется значение с расширением для построения пути до файла
-        
+        string entityType = Path.GetFileNameWithoutExtension(nameTable).ToLower();
+        string pathToTable = Path.Combine(pathToFolder, nameTable); // путь до выбранной юзерой таблицы
+        char separator = AuxiliaryMethods.DetectedSeparator(pathToTable);
+        List<object[]> listInfoTable = AuxiliaryMethods.ReadAllLinesFromTable(pathToTable, separator);
+        List<IEntity> rowsFromTable = new List<IEntity>();// лист со всеми объектами из выбранной таблицы
+        var factory = new Factory();
+        foreach (object[] line in listInfoTable.Skip(1))
+        {
+            IEntity rowFromTable = factory.CreateEntity(entityType,line);
+            rowsFromTable.Add(rowFromTable);
+        }
+        foreach (IEntity row in rowsFromTable)
+        {
+            Console.WriteLine(row);
+        }
     }
 }

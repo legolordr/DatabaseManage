@@ -45,8 +45,34 @@ class AuxiliaryMethods
         throw new ArgumentException();
     }
     
-    public static void GetLinesTable(string pathToTable)
+    public static void WriteAllLinesFromTable(string pathToTable,char separator)
     {
+        foreach (string line in File.ReadAllLines(pathToTable))
+        {
+            foreach (string lineSplit in line.Split(separator))
+            {
+                Console.Write(lineSplit + ' ');
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public static char DetectedSeparator(string pathToTable)
+    {
+        char separator = new char();
+        if (pathToTable.Contains("csv")) separator = ';';
+        else if (pathToTable.Contains("tsv")) separator = '\t';
+        return separator;
+    }
+    public static List<object[]> ReadAllLinesFromTable(string pathToTable, char separator)
+    {
+        List<object[]> listLineSplit = new List<object[]>();
         
+        foreach (string line in File.ReadAllLines(pathToTable))
+        {
+            string[] lineSplit = line.Split(separator);
+            listLineSplit.Add(lineSplit);
+        }
+        return  listLineSplit;
     }
 }
