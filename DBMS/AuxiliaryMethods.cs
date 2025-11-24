@@ -64,9 +64,9 @@ class AuxiliaryMethods
         else if (pathToTable.Contains("tsv")) separator = '\t';
         return separator;
     }
-    public static List<object[]> ReadAllLinesFromTable(string pathToTable, char separator)
+    public static List<string[]> ReadAllLinesFromTable(string pathToTable, char separator)
     {
-        List<object[]> listLineSplit = new List<object[]>();
+        List<string[]> listLineSplit = new List<string[]>();
         
         foreach (string line in File.ReadAllLines(pathToTable))
         {

@@ -8,14 +8,14 @@ public class Factory
         employees
     }
     
-    public IEntity CreateEntity(string entityType, params object[] parameters)
+    public IEntity CreateEntity(string entityType, string[] parameters)
     {
-        string[] stringParams = parameters.Select(p => p.ToString()).ToArray();
+        // string[] stringParams = parameters.Select(p => p.ToString()).ToArray();
         
         return entityType switch
         {
-            nameof(EntityType.contractors) => CreateContractor(stringParams),
-            nameof(EntityType.employees) => CreateEmployee(stringParams),
+            nameof(EntityType.contractors) => CreateContractor(parameters),
+            nameof(EntityType.employees) => CreateEmployee(parameters),
             _ => throw new ArgumentException()
         };
     }

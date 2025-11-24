@@ -11,10 +11,10 @@ class Program
         string entityType = Path.GetFileNameWithoutExtension(nameTable).ToLower();
         string pathToTable = Path.Combine(pathToFolder, nameTable); // путь до выбранной юзерой таблицы
         char separator = AuxiliaryMethods.DetectedSeparator(pathToTable);
-        List<object[]> listInfoTable = AuxiliaryMethods.ReadAllLinesFromTable(pathToTable, separator);
+        List<string[]> linesInfoTable = AuxiliaryMethods.ReadAllLinesFromTable(pathToTable, separator);
         List<IEntity> rowsFromTable = new List<IEntity>();// лист со всеми объектами из выбранной таблицы
         var factory = new Factory();
-        foreach (object[] line in listInfoTable.Skip(1))
+        foreach (string[] line in linesInfoTable.Skip(1))
         {
             IEntity rowFromTable = factory.CreateEntity(entityType,line);
             rowsFromTable.Add(rowFromTable);
