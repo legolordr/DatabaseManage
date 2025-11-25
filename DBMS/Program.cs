@@ -8,23 +8,14 @@ class Program
         string pathToFolder = AuxiliaryMethods.GetPathToFolder(); // путь до папки
         string[] tables = AuxiliaryMethods.GetArrayTables(pathToFolder); // тут лежит массив путей до каждой таблицы
         string nameTable = AuxiliaryMethods.GetNameTable(tables); //возваращется значение с расширением для построения пути до файла
-        string entityType = Path.GetFileNameWithoutExtension(nameTable).ToLower();
         string pathToTable = Path.Combine(pathToFolder, nameTable); // путь до выбранной юзерой таблицы
+        
         char separator = AuxiliaryMethods.DetectedSeparator(pathToTable);
+        
         List<string[]> linesInfoTable = AuxiliaryMethods.ReadAllLinesFromTable(pathToTable, separator);
+        
         List<UniversalEntity> rowsFromTable = new List<UniversalEntity>();// лист со всеми объектами из выбранной таблицы
-        string[] headers = linesInfoTable[0]; // заголовки таблицы
-        var factory = new Factory();
-        foreach (string[] values in linesInfoTable.Skip(1))
-        {
-            UniversalEntity rowFromTable = factory.CreateEntity(headers, values);
-            rowsFromTable.Add(rowFromTable);
-        }
-        Console.WriteLine("\nЗаголовки: " + string.Join(" | ", headers));
-        Console.WriteLine("Данные:");
-        foreach (UniversalEntity row in rowsFromTable)
-        {
-            Console.WriteLine(row);
-        }
+        
+        AuxiliaryMethods.WriteAllLinesFromTable(linesInfoTable,rowsFromTable);
     }
 }

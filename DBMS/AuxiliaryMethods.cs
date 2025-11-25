@@ -45,18 +45,6 @@ class AuxiliaryMethods
         throw new ArgumentException();
     }
     
-    public static void WriteAllLinesFromTable(string pathToTable,char separator)
-    {
-        foreach (string line in File.ReadAllLines(pathToTable))
-        {
-            foreach (string lineSplit in line.Split(separator))
-            {
-                Console.Write(lineSplit + ' ');
-            }
-            Console.WriteLine();
-        }
-    }
-
     public static char DetectedSeparator(string pathToTable)
     {
         char separator = new char();
@@ -75,4 +63,22 @@ class AuxiliaryMethods
         }
         return  listLineSplit;
     }
+
+    public static void WriteAllLinesFromTable(List<string[]> linesInfoTable, List<UniversalEntity> rowsFromTable)
+    {
+        string[] headers = linesInfoTable[0]; // заголовки таблицы
+        var factory = new Factory();
+        foreach (string[] values in linesInfoTable.Skip(1))
+        {
+            UniversalEntity rowFromTable = factory.CreateEntity(headers, values);
+            rowsFromTable.Add(rowFromTable);
+        }
+        Console.WriteLine("\nЗаголовки: " + string.Join(" | ", headers));
+        Console.WriteLine("Данные:");
+        foreach (UniversalEntity row in rowsFromTable)
+        {
+            Console.WriteLine(row);
+        }
+    }
+    
 }
