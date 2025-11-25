@@ -2,47 +2,13 @@
 
 public class Factory
 {
-    enum EntityType
+    public UniversalEntity CreateEntity(string[] headers, string[] values)
     {
-        contractors,
-        employees
-    }
-    
-    public IEntity CreateEntity(string entityType, string[] parameters)
-    {
-        // string[] stringParams = parameters.Select(p => p.ToString()).ToArray();
-        
-        return entityType switch
+        Dictionary<string, object> parameters = new Dictionary<string, object>();
+        for (int i = 0; i < headers.Length; i++)
         {
-            nameof(EntityType.contractors) => CreateContractor(parameters),
-            nameof(EntityType.employees) => CreateEmployee(parameters),
-            _ => throw new ArgumentException()
-        };
-    }
-    
-    Employees CreateEmployee(string[] parameters)
-    {
-        if (parameters.Length < 4)
-            throw new ArgumentException();
-        
-        return new Employees(
-            int.Parse(parameters[0]),
-            parameters[1],
-            parameters[2],
-            int.Parse(parameters[3])  
-        );
-    }
-
-    Contractors CreateContractor(string[] parameters)
-    {
-        if (parameters.Length < 4)
-            throw new ArgumentException();
-
-        return new Contractors(
-            int.Parse(parameters[0]),
-            parameters[1],
-            int.Parse(parameters[2]),
-            parameters[3]
-        );
+            parameters[headers[i]] = values[i];
+        }
+        return new UniversalEntity(parameters);
     }
 }

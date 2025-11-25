@@ -12,14 +12,17 @@ class Program
         string pathToTable = Path.Combine(pathToFolder, nameTable); // путь до выбранной юзерой таблицы
         char separator = AuxiliaryMethods.DetectedSeparator(pathToTable);
         List<string[]> linesInfoTable = AuxiliaryMethods.ReadAllLinesFromTable(pathToTable, separator);
-        List<IEntity> rowsFromTable = new List<IEntity>();// лист со всеми объектами из выбранной таблицы
+        List<UniversalEntity> rowsFromTable = new List<UniversalEntity>();// лист со всеми объектами из выбранной таблицы
+        string[] headers = linesInfoTable[0]; // заголовки таблицы
         var factory = new Factory();
-        foreach (string[] line in linesInfoTable.Skip(1))
+        foreach (string[] values in linesInfoTable.Skip(1))
         {
-            IEntity rowFromTable = factory.CreateEntity(entityType,line);
+            UniversalEntity rowFromTable = factory.CreateEntity(headers, values);
             rowsFromTable.Add(rowFromTable);
         }
-        foreach (IEntity row in rowsFromTable)
+        Console.WriteLine("\nЗаголовки: " + string.Join(" | ", headers));
+        Console.WriteLine("Данные:");
+        foreach (UniversalEntity row in rowsFromTable)
         {
             Console.WriteLine(row);
         }
