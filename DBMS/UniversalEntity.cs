@@ -10,7 +10,7 @@ public class UniversalEntity
     // переопределим Tostring, чтобы WriteLine работал корректно
     public override string ToString()
     {
-        var parameters = string.Join(" ", Parameters.Select(p => $"{p.Key}:{p.Value}"));
-        return $"{parameters}";
+        var parameters = string.Join(" ", Parameters.Select(p => $"{p.Value}"));
+        return parameters;
     }
 }

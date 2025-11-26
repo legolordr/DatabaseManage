@@ -10,12 +10,22 @@ class Program
         string nameTable = AuxiliaryMethods.GetNameTable(tables); //возваращется значение с расширением для построения пути до файла
         string pathToTable = Path.Combine(pathToFolder, nameTable); // путь до выбранной юзерой таблицы
         
-        char separator = AuxiliaryMethods.DetectedSeparator(pathToTable);
+        char separator = AuxiliaryMethods.DetectedSeparator(pathToTable); // определение разделителя
         
-        List<string[]> linesInfoTable = AuxiliaryMethods.ReadAllLinesFromTable(pathToTable, separator);
+        //получение заголовков столбцов
+        string[] headersFromFile = AuxiliaryMethods.GetHeadersFromFiles(pathToTable,separator);
         
-        List<UniversalEntity> rowsFromTable = new List<UniversalEntity>();// лист со всеми объектами из выбранной таблицы
+        Console.WriteLine(string.Join(" ",headersFromFile)); // предоставление юзеру названий столбцов
         
-        AuxiliaryMethods.WriteAllLinesFromTable(linesInfoTable,rowsFromTable);
+        string[] headersFromUser = AuxiliaryMethods.GetHeadersFromUser(headersFromFile);// столбики от юзера
+        
+        int[] pagination = AuxiliaryMethods.GetPagination(); // получение кол-во строк пропуска/загрузки
+        int paginationSkip =  pagination[0];
+        int paginationRead =  pagination[1];
+        //получение строк таблицы с учетом пагинации в виде листа с массивами строк
+        List<string[]> linesTable = AuxiliaryMethods.GetLinesFromTable(pathToTable, separator, paginationSkip, paginationRead);
+        
+        //вывод
+        AuxiliaryMethods.WriteLinesFromTable(linesTable,headersFromUser);
     }
 }

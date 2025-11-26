@@ -48,15 +48,26 @@ class AuxiliaryMethods
     public static char DetectedSeparator(string pathToTable)
     {
         char separator = new char();
-        if (pathToTable.Contains("csv")) separator = ';';
-        else if (pathToTable.Contains("tsv")) separator = '\t';
+        if (pathToTable.Contains(".csv")) separator = ';';
+        else if (pathToTable.Contains(".tsv")) separator = '\t';
         return separator;
     }
-    public static List<string[]> ReadAllLinesFromTable(string pathToTable, char separator)
+
+    public static int[] GetPagination()
+    {
+        Console.WriteLine("Сколько строк нужно пропустить?");
+        int paginationSkip = int.Parse(Console.ReadLine());
+        Console.WriteLine("Сколько строк нужно загрузить?");
+        int paginationRead = int.Parse(Console.ReadLine());
+        int[] pagination = new int[2];
+        pagination[0] = paginationSkip;
+        pagination[1] = paginationRead;
+        return pagination;
+    }
+    public static List<string[]> GetLinesFromTable(string pathToTable, char separator, int paginationSkip,int paginationRead)
     {
         List<string[]> listLineSplit = new List<string[]>();
-        
-        foreach (string line in File.ReadAllLines(pathToTable))
+        foreach (string line in File.ReadLines(pathToTable).Skip(1).Skip(paginationSkip).Take(paginationRead))
         {
             string[] lineSplit = line.Split(separator);
             listLineSplit.Add(lineSplit);
@@ -64,21 +75,33 @@ class AuxiliaryMethods
         return  listLineSplit;
     }
 
-    public static void WriteAllLinesFromTable(List<string[]> linesInfoTable, List<UniversalEntity> rowsFromTable)
+    public static string[] GetHeadersFromFiles(string pathToTable,char separator)
     {
-        string[] headers = linesInfoTable[0]; // заголовки таблицы
+        string headers = File.ReadLines(pathToTable).First();
+        return headers.Split(separator);
+    }
+
+    public static string[] GetHeadersFromUser(string[] headersFromFile)
+    {
+        Console.WriteLine("Введите названия стобцов, которые хотите увидеть, если хотите увидеть всё, введите '*'");
+        string[] headersFromUser = Console.ReadLine().Split(" ",StringSplitOptions.RemoveEmptyEntries);
+        if (headersFromUser[0] == "*") return headersFromFile ;
+        return headersFromUser;
+    }
+    
+    public static void WriteLinesFromTable(List<string[]> linesInfoTable,string[] headers)
+    {
+        List<UniversalEntity> rowsFromTable = new List<UniversalEntity>();
         var factory = new Factory();
-        foreach (string[] values in linesInfoTable.Skip(1))
+        foreach (string[] values in linesInfoTable)
         {
             UniversalEntity rowFromTable = factory.CreateEntity(headers, values);
             rowsFromTable.Add(rowFromTable);
         }
-        Console.WriteLine("\nЗаголовки: " + string.Join(" | ", headers));
-        Console.WriteLine("Данные:");
+        Console.WriteLine(string.Join(" ", headers));
         foreach (UniversalEntity row in rowsFromTable)
         {
             Console.WriteLine(row);
         }
     }
-    
 }
