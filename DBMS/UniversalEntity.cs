@@ -7,7 +7,7 @@ public class UniversalEntity
     {
         Parameters = parameters;
     }
-    // переопределим Tostring, чтобы WriteLine работал корректно
+    // переопределим Tostring, чтобы WriteLine выводил конкретные значения
     public override string ToString()
     {
         var parameters = string.Join(" ", Parameters.Select(p => $"{p.Value}"));
