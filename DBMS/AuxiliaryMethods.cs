@@ -84,7 +84,7 @@ class AuxiliaryMethods
     public static string[] GetHeadersFromUser(string[] headersFromFile)
     {
         Console.WriteLine("Введите названия стобцов, которые хотите увидеть, если хотите увидеть всё, введите '*'");
-        string[] headersFromUser = Console.ReadLine().Split(" ",StringSplitOptions.RemoveEmptyEntries);
+        string[] headersFromUser = Console.ReadLine().Split(',');
         if (headersFromUser[0] == "*") return headersFromFile;
         return headersFromUser;
     }
