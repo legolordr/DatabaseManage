@@ -85,20 +85,20 @@ class AuxiliaryMethods
     {
         Console.WriteLine("Введите названия стобцов, которые хотите увидеть, если хотите увидеть всё, введите '*'");
         string[] headersFromUser = Console.ReadLine().Split(" ",StringSplitOptions.RemoveEmptyEntries);
-        if (headersFromUser[0] == "*") return headersFromFile ;
+        if (headersFromUser[0] == "*") return headersFromFile;
         return headersFromUser;
     }
     
-    public static void WriteLinesFromTable(List<string[]> linesInfoTable,string[] headers)
+    public static void WriteLinesFromTable(List<string[]> linesInfoTable,string[] headersFromFile,string[] headersFromUser)
     {
         List<UniversalEntity> rowsFromTable = new List<UniversalEntity>();
         var factory = new Factory();
         foreach (string[] values in linesInfoTable)
         {
-            UniversalEntity rowFromTable = factory.CreateEntity(headers, values);
+            UniversalEntity rowFromTable = factory.CreateEntity(headersFromUser,headersFromFile, values);
             rowsFromTable.Add(rowFromTable);
         }
-        Console.WriteLine(string.Join(" ", headers));
+        Console.WriteLine(string.Join(" ", headersFromUser));
         foreach (UniversalEntity row in rowsFromTable)
         {
             Console.WriteLine(row);

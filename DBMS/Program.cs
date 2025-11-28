@@ -25,7 +25,7 @@ class Program
         //получение строк таблицы с учетом пагинации в виде листа с массивами строк
         List<string[]> linesTable = AuxiliaryMethods.GetLinesFromTable(pathToTable, separator, paginationSkip, paginationRead);
         
-        //вывод
-        AuxiliaryMethods.WriteLinesFromTable(linesTable,headersFromUser);
+        //вывод с учетом нужных столбцов
+        AuxiliaryMethods.WriteLinesFromTable(linesTable,headersFromFile,headersFromUser);
     }
 }
