@@ -2,8 +2,8 @@
 
 public class UniversalEntity
 {
-    public Dictionary<string,object>  Parameters { get; }
-    public UniversalEntity(Dictionary<string,object> parameters)
+    public Dictionary<string,string>  Parameters { get; }
+    public UniversalEntity(Dictionary<string,string> parameters)
     {
         Parameters = parameters;
     }

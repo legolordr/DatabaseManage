@@ -1,14 +1,21 @@
-﻿using System.Net.ServerSentEvents;
-using System.Xml;
-
-namespace DBMS;
+﻿namespace DBMS;
 
 class AuxiliaryMethods
 {
     public static string GetPathToFolder()
     {
-        Console.WriteLine("Введите путь до папки");
-        return Console.ReadLine();
+        try
+        {
+            Console.WriteLine("Введите путь до папки");
+            string pathToFolder = Console.ReadLine();
+            if (Directory.Exists(pathToFolder)) return pathToFolder;
+            throw new DirectoryNotFoundException("Папка не найдена");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return GetPathToFolder();
+        }
     }
     public static string[] GetArrayTables(string pathToFolder)
     {
@@ -30,19 +37,27 @@ class AuxiliaryMethods
             }
             Console.WriteLine(name);
         }
-        Console.WriteLine("Выберите с какой базой данных хотите работать, введите её название:");
-        string nameTable =  Console.ReadLine().ToLower();
 
-        for (int i = 0; i < arrayNameTableWithExt.Length; i++)
+        try
         {
-           if  (arrayNameTableWithOutExt[i] == nameTable) nameTable = arrayNameTableWithExt[i];
+            Console.WriteLine("Выберите с какой базой данных хотите работать, введите её название:");
+            string nameTable =  Console.ReadLine().ToLower();
+
+            for (int i = 0; i < arrayNameTableWithExt.Length; i++)
+            {
+                if  (arrayNameTableWithOutExt[i] == nameTable) nameTable = arrayNameTableWithExt[i];
+            }
+            if (arrayNameTableWithExt.Contains(nameTable))
+            {
+                return nameTable;
+            }
+            throw new ArgumentException("Таблица не найдена");
         }
-        // проверка на существование таблицы
-        if (arrayNameTableWithExt.Contains(nameTable))
+        catch (Exception e)
         {
-            return nameTable;
+            Console.WriteLine(e.Message);
+            return GetNameTable(values);
         }
-        throw new ArgumentException();
     }
     
     public static char DetectedSeparator(string pathToTable)
@@ -53,16 +68,28 @@ class AuxiliaryMethods
         return separator;
     }
 
-    public static int[] GetPagination()
+    public static Pagination GetPagination(string pathToTable)
     {
-        Console.WriteLine("Сколько строк нужно пропустить?");
-        int paginationSkip = int.Parse(Console.ReadLine());
-        Console.WriteLine("Сколько строк нужно загрузить?");
-        int paginationRead = int.Parse(Console.ReadLine());
-        int[] pagination = new int[2];
-        pagination[0] = paginationSkip;
-        pagination[1] = paginationRead;
-        return pagination;
+        try
+        {
+            Console.WriteLine("Введите сколько строк вы хотите пропустить,а сколько загрузить, через запятую");
+            int[] pagination = Console.ReadLine().Split(',').Select(int.Parse).ToArray();
+            bool flag = true;
+            int sum = 0;
+            int count = File.ReadLines(pathToTable).Skip(1).ToArray().Length;
+            for (int i = 0; i < pagination.Length; i++)
+            {
+                sum += pagination[i];
+                if (!(pagination[i] > 0 && pagination[i] < count && sum < count )) flag = false;
+            }
+            if (flag) return new Pagination(pagination[0], pagination[1]);
+            throw new ArgumentException("Введено неверное число строк");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return GetPagination(pathToTable);
+        }
     }
     public static List<string[]> GetLinesFromTable(string pathToTable, char separator, int paginationSkip,int paginationRead)
     {
@@ -83,10 +110,24 @@ class AuxiliaryMethods
 
     public static string[] GetHeadersFromUser(string[] headersFromFile)
     {
-        Console.WriteLine("Введите названия стобцов, которые хотите увидеть, если хотите увидеть всё, введите '*'");
-        string[] headersFromUser = Console.ReadLine().Split(',');
-        if (headersFromUser[0] == "*") return headersFromFile;
-        return headersFromUser;
+        try
+        {
+            Console.WriteLine("Введите названия стобцов, которые хотите увидеть, если хотите увидеть всё, введите '*'");
+            string[] headersFromUser = Console.ReadLine().Split(',');
+            if (headersFromUser[0] == "*") return headersFromFile;
+            bool flag = true;
+            for (int i = 0; i < headersFromUser.Length; i++)
+            {
+                if (!(headersFromFile.Contains(headersFromUser[i]))) flag = false;
+            }
+            if (flag) return headersFromUser;
+            throw new ArgumentException("Введите корректные названия стобиков через запятую");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return  GetHeadersFromUser(headersFromFile);
+        }
     }
     
     public static void WriteLinesFromTable(List<string[]> linesInfoTable,string[] headersFromFile,string[] headersFromUser)

@@ -2,7 +2,6 @@
 
 class Program
 {
-
     static void Main()
     {
         string pathToFolder = AuxiliaryMethods.GetPathToFolder(); // путь до папки
@@ -19,11 +18,10 @@ class Program
         
         string[] headersFromUser = AuxiliaryMethods.GetHeadersFromUser(headersFromFile);// столбики от юзера
         
-        int[] pagination = AuxiliaryMethods.GetPagination(); // получение кол-во строк пропуска/загрузки
-        int paginationSkip =  pagination[0];
-        int paginationRead =  pagination[1];
+        Pagination pagination = AuxiliaryMethods.GetPagination(pathToTable); // получение кол-во строк пропуска/загрузки
+        
         //получение строк таблицы с учетом пагинации в виде листа с массивами строк
-        List<string[]> linesTable = AuxiliaryMethods.GetLinesFromTable(pathToTable, separator, paginationSkip, paginationRead);
+        List<string[]> linesTable = AuxiliaryMethods.GetLinesFromTable(pathToTable, separator, pagination.PaginationSkip, pagination.PaginationRead);
         
         //вывод с учетом нужных столбцов
         AuxiliaryMethods.WriteLinesFromTable(linesTable,headersFromFile,headersFromUser);
