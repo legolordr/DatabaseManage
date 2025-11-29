@@ -10,16 +10,6 @@ class AuxiliaryMethods
             Console.Write(header + " ");
         }
     }
-    public static List<string[]> GetLinesFromTable(string pathToTable, char separator, int paginationSkip,int paginationRead)
-    {
-        List<string[]> listLineSplit = new List<string[]>();
-        foreach (string line in File.ReadLines(pathToTable).Skip(1).Skip(paginationSkip).Take(paginationRead))
-        {
-            string[] lineSplit = line.Split(separator);
-            listLineSplit.Add(lineSplit);
-        }
-        return  listLineSplit;
-    }
     public static void WriteLinesFromTable(LinesFromTable linesInfoTable,string[] headersFromFile,string[] headersFromUser)
     {
         List<UniversalEntity> rowsFromTable = new List<UniversalEntity>();
