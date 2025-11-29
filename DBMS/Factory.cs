@@ -2,6 +2,16 @@
 
 public class Factory
 {
+    public LinesFromTable CreateTable(TablePath tablePath, Pagination pagination,Separators separator)
+    {
+        List<string[]> listLineSplit = new List<string[]>();
+        foreach (string line in File.ReadLines(tablePath.PathToTable).Skip(1).Skip(pagination.PaginationSkip).Take(pagination.PaginationRead))
+        {
+            string[] lineSplit = line.Split(separator.Separator);
+            listLineSplit.Add(lineSplit);
+        }
+        return  new LinesFromTable(listLineSplit);
+    }
     public UniversalEntity CreateEntity(string[] headersFromUser,string[] headersFromFile, string[] values)
     {
         Dictionary<string, string> parameters = new Dictionary<string, string>();
@@ -85,7 +95,7 @@ public class Factory
                 if (!(headersFromFile.Contains(headersFromUser[i]))) flag = false;
             }
             if (flag) return new TableHeaders(headersFromFileSplit, headersFromUser);
-            throw new ArgumentException("Введите корректные названия стобиков через запятую");
+            throw new ArgumentException("Ошибка ввода значений");
         }
         catch (Exception e)
         {
@@ -117,4 +127,5 @@ public class Factory
             return CreatePagination(tablePath);
         }
     }
+    
 }

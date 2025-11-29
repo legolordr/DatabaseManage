@@ -20,11 +20,11 @@ class AuxiliaryMethods
         }
         return  listLineSplit;
     }
-    public static void WriteLinesFromTable(List<string[]> linesInfoTable,string[] headersFromFile,string[] headersFromUser)
+    public static void WriteLinesFromTable(LinesFromTable linesInfoTable,string[] headersFromFile,string[] headersFromUser)
     {
         List<UniversalEntity> rowsFromTable = new List<UniversalEntity>();
         var factory = new Factory();
-        foreach (string[] values in linesInfoTable)
+        foreach (string[] values in linesInfoTable.LinesTable)
         {
             UniversalEntity rowFromTable = factory.CreateEntity(headersFromUser,headersFromFile, values);
             rowsFromTable.Add(rowFromTable);

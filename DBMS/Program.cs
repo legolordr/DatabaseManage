@@ -16,8 +16,7 @@ class Program
         Pagination pagination = factory.CreatePagination(tablePath) ; // получение кол-во строк пропуска/загрузки
         
         //получение строк таблицы с учетом пагинации в виде листа с массивами строк
-        List<string[]> linesTable = AuxiliaryMethods.GetLinesFromTable
-            (tablePath.PathToTable, separator.Separator, pagination.PaginationSkip, pagination.PaginationRead);
+        LinesFromTable linesTable = factory.CreateTable(tablePath, pagination, separator);
         
         //вывод с учетом нужных столбцов
         AuxiliaryMethods.WriteLinesFromTable(linesTable,tableHeaders.HeadersFromFile,tableHeaders.HeadersFromUser);
