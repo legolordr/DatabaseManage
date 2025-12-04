@@ -4,16 +4,16 @@ class Program
 {
     static void Main()
     {
-        TablePath tablePath = Factory.CreateTablePath();
+        TablePath tablePath = ReadFile.CreateTablePath();
         Separators separator = ReadFile.CreateSeparators(tablePath);
         
         string[] headersFromFile = ReadFile.GetHeadersFromFile(tablePath,separator);
         
         DrawTable.WriteHeaders(headersFromFile);
         
-        TableHeaders tableHeaders = Factory.CreateTableHeaders(headersFromFile);
+        TableHeaders tableHeaders = ReadFile.CreateTableHeaders(headersFromFile);
         
-        Pagination pagination = ReadUserInfo.CreatePagination(tablePath); 
+        Pagination pagination = ReadFile.CreatePagination(tablePath); 
         
         LinesFromTable linesTable = ReadFile.CreateTable(tablePath, pagination, separator);
         
