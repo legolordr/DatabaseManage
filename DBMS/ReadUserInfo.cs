@@ -12,10 +12,10 @@ public static class ReadUserInfo
             if (headersFromUser[0] == "*") 
                 return headersFromFile;
             
-            string headers = string.Join(" ", headersFromUser);
+            string headersFile = string.Join(" ", headersFromFile);
             foreach (string header in headersFromUser)
             {
-                if (!headers.Contains(header.Trim()))
+                if (!headersFile.Contains(header.Trim()))
                     throw new ArgumentException("Ошибка ввода значений");
             }
         
