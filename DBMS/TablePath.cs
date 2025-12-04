@@ -2,13 +2,14 @@
 
 public class TablePath
 {
-    public string PathToFodler { get; }
-    public string TableName { get; }
+    public string PathToFolder { get; }
+    public string TableName  { get; }
     public string PathToTable { get; }
-    public TablePath(string pathToFodler, string tableName)
+
+    public TablePath(string pathToFolder, string tableName)
     {
-        PathToFodler = pathToFodler;
+        PathToFolder = pathToFolder;
         TableName = tableName;
-        PathToTable = Path.Combine(pathToFodler, tableName);
+        PathToTable = Path.Combine(pathToFolder, tableName);
     }
 }

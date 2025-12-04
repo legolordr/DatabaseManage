@@ -4,18 +4,19 @@ class Program
 {
     static void Main()
     {
-        Factory factory = new Factory();
-        TablePath tablePath = factory.CreateTablePath();
-        Separators separator = factory.CreateSeparators(tablePath);
+        TablePath tablePath = Factory.CreateTablePath();
+        Separators separator = ReadFile.CreateSeparators(tablePath);
         
-        AuxiliaryMethods.WriteHeaders(tablePath, separator);
+        string[] headersFromFile = ReadFile.GetHeadersFromFile(tablePath,separator);
         
-        TableHeaders tableHeaders = factory.CreateTableHeaders(tablePath, separator);
+        DrawTable.WriteHeaders(headersFromFile);
         
-        Pagination pagination = factory.CreatePagination(tablePath); 
+        TableHeaders tableHeaders = Factory.CreateTableHeaders(headersFromFile);
         
-        LinesFromTable linesTable = factory.CreateTable(tablePath, pagination, separator);
+        Pagination pagination = ReadUserInfo.CreatePagination(tablePath); 
         
-        AuxiliaryMethods.WriteLinesFromTable(linesTable,tableHeaders.HeadersFromFile,tableHeaders.HeadersFromUser);
+        LinesFromTable linesTable = ReadFile.CreateTable(tablePath, pagination, separator);
+        
+        DrawTable.WriteLinesFromTable(linesTable,tableHeaders);
     }
 }
