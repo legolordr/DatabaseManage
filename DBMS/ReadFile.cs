@@ -85,7 +85,7 @@ public static class ReadFile
             int[] pagination = ReadUserInfo.GetPagination();
             bool flag = true;
             int sum = 0;
-            int count = File.ReadLines(tablePath.PathToTable).Skip(1).ToArray().Length;
+            int count = File.ReadLines(tablePath.PathToTable).Count() - 1;
             for (int i = 0; i < pagination.Length; i++)
             {
                 sum += pagination[i];
